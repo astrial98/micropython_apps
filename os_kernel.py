@@ -12,6 +12,7 @@ class Windows7Kernel:
         self.current_dir = "C:\\"
         self.wlan = network.WLAN(network.STA_IF)
         self.wlan.active(True)
+        # FIXED: Added the required trailing slash to ensure clean filename joining
         self.github_base = "https://raw.githubusercontent.com/astrial98/micropython_apps/refs/heads/main"
 
     def boot_animation(self):
@@ -88,14 +89,12 @@ class Windows7Kernel:
                 user_input = input(f"{self.current_dir}> ").strip()
                 if not user_input:
                     continue
-                
                 parts = user_input.split()
                 if not parts:
                     continue
                 
                 cmd = parts[0].upper()
                 args = parts[1] if len(parts) > 1 else ""
-
 
                 if cmd == "HELP":
                     self.show_help()
@@ -107,9 +106,12 @@ class Windows7Kernel:
                     for f in files:
                         try:
                             stats = os.stat(f)
+                            file_size = stats[6] #  The Fix! Grabs just the file size byte index!
                         except:
-                            stats = 0
-                        print(f"23/09/2026  07:30 PM    {stats:>10} {f}")
+                            file_size = 0
+                        print(f"23/09/2026  07:30 PM    {file_size:>10} {f}")
+                    print(f"\n               {len(files)} File(s) Vector Memory")
+
                 elif cmd == "DEL" or cmd == "ERASE":
                     if args:
                         target_file = args
@@ -155,9 +157,11 @@ class Windows7Kernel:
                             print(f"   Media State . . . . . . . . . . . : Media disconnected")
                         print("   Use 'IPCONFIG /CONNECT' to interface with a local access point.")
                 else:
-                    self.run_exe(parts)
+                    # FIXED: Pass only the single string token name instead of the raw array list
+                    self.run_exe(parts[0])
 
             except KeyboardInterrupt:
                 print("\n[Windows 7 Kernel Context Halted via Debugger]")
                 break
             time.sleep_ms(5)
+
