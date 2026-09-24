@@ -89,9 +89,13 @@ class Windows7Kernel:
                 if not user_input:
                     continue
                 
-                        parts = user_input.split()
-                        cmd = parts[0].upper() #  The Fix!
-                        args = parts[1:] if len(parts) > 1 else []
+                parts = user_input.split()
+                if not parts:
+                    continue
+                
+                cmd = parts[0].upper()
+                args = parts[1] if len(parts) > 1 else ""
+
 
                 if cmd == "HELP":
                     self.show_help()
