@@ -1,4 +1,3 @@
-# Updated os_kernel.py on GitHub - Includes DEL Command
 import os
 import sys
 import gc
@@ -13,7 +12,7 @@ class Windows7Kernel:
         self.current_dir = "C:\\"
         self.wlan = network.WLAN(network.STA_IF)
         self.wlan.active(True)
-        self.github_base = "https://githubusercontent.com"
+        self.github_base = "https://raw.githubusercontent.com/astrial98/micropython_apps/refs/heads/main"
 
     def boot_animation(self):
         print("\nStarting Windows...")
